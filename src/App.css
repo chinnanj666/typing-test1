@@ -1,0 +1,528 @@
+:root {
+  --saturation: 100%;
+  --lightness: 90%;
+  --gray-100: #a0a0a0;
+  --gray-300: #909090;
+  --gray-500: #646464;
+  --gray-700: #404040;
+  --hide-duration: 0.5s;
+}
+
+body {
+  background-color: black;
+  color: white;
+  font-family: "JetBrains Mono", monospace;
+  --glow: 0px 0px 12px 8px rgba(255, 255, 255, 0.3);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 1px solid white;
+  outline-offset: 2px;
+}
+
+small {
+  font-size: 0.75rem;
+}
+
+b {
+  font-weight: 700;
+}
+
+.animated-gradient {
+  /* requires width & height(in rem) and bgsize properties */
+  background: linear-gradient(
+    atan(var(--height) / var(--width)),
+    hsl(0, var(--saturation), var(--lightness)),
+    hsl(72, var(--saturation), var(--lightness)),
+    hsl(144, var(--saturation), var(--lightness)),
+    hsl(216, var(--saturation), var(--lightness)),
+    hsl(0, var(--saturation), var(--lightness)),
+    hsl(72, var(--saturation), var(--lightness)),
+    hsl(144, var(--saturation), var(--lightness)),
+    hsl(216, var(--saturation), var(--lightness)),
+    hsl(360, var(--saturation), var(--lightness))
+  );
+  background-repeat: repeat;
+  animation: gradient 60s linear infinite;
+  background-size: var(--bgsize) var(--bgsize);
+  width: calc(var(--width) * 1rem);
+  height: calc(var(--height) * 1rem);
+}
+
+@keyframes gradient {
+  100% {
+    background-position: var(--bgsize) calc(-1 * var(--bgsize));
+  }
+}
+
+@keyframes border {
+  100% {
+    background-position: var(--bgsize) calc(-1 * var(--bgsize));
+  }
+}
+
+.gradient {
+  background: var(
+    --gradient,
+    linear-gradient(
+      106deg,
+      rgba(226, 255, 207, 0.75) 22.12%,
+      rgba(243, 222, 255, 0.75) 77.27%
+    )
+  );
+}
+
+.glow-shadow {
+  box-shadow: var(--glow);
+}
+
+.text-display-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+
+  > .timer {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    translate: -50% -150%;
+    color: var(--gray-500);
+  }
+}
+
+#input {
+  color: transparent;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.text-display {
+  --rows: 3;
+  --height: 4rem;
+  --line-height: calc(var(--height) / var(--rows));
+  mix-blend-mode: difference;
+  width: 15rem;
+  height: var(--height);
+  line-height: var(--line-height);
+  padding-top: var(--line-height);
+  -webkit-mask-image: linear-gradient(
+    0deg,
+    transparent 0%,
+    white var(--line-height),
+    white calc(100% - var(--line-height)),
+    transparent 100%
+  );
+  overflow: hidden;
+
+  .scroller {
+    --scroll-duration: 0.5s;
+    translate: 0 var(--depth);
+    transition: translate var(--scroll-duration);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .word {
+    display: flex;
+  }
+
+  .char:last-child {
+    display: inline-block;
+    width: 1ch;
+    height: 100%;
+  }
+
+  .word.typed,
+  .char.typed {
+    color: #424242;
+  }
+  .char.typing {
+    position: relative;
+  }
+  &.show-cursor .char.typing {
+    color: black;
+    &:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      z-index: -1;
+    }
+  }
+  .typo .char.typing:before {
+    background-color: #f88;
+  }
+}
+
+.game-mode-selector {
+  margin-top: 1.5rem;
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  transition-duration: var(--hide-duration);
+
+  &.hide {
+    translate: 0 -150%;
+  }
+
+  .major-options .option,
+  .minor-options .option {
+    border-radius: 100px;
+  }
+
+  .major-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    position: relative;
+  }
+
+  .major-options .option {
+    padding: 0.5rem 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .major-options
+    :nth-child(2).option[aria-selected="true"]
+    ~ .selection-indicator-wrapper {
+    left: 33.33%;
+  }
+
+  .major-options
+    :nth-child(3).option[aria-selected="true"]
+    ~ .selection-indicator-wrapper {
+    left: 66.66%;
+  }
+
+  .major-options .option {
+    &:hover
+      + .option[aria-selected="true"]
+      ~ .selection-indicator-wrapper,
+    &:focus-visible
+      + .option[aria-selected="true"]
+      ~ .selection-indicator-wrapper {
+      --morph-factor: -1;
+    }
+    &:hover:active
+      + .option[aria-selected="true"]
+      ~ .selection-indicator-wrapper {
+      --morph-factor: 1;
+    }
+  }
+  .major-options .option {
+    &:hover
+      + .option
+      + .option[aria-selected="true"]
+      ~ .selection-indicator-wrapper,
+    &:focus-visible
+      + .option
+      + .option[aria-selected="true"]
+      ~ .selection-indicator-wrapper {
+      --morph-factor: -2;
+    }
+    &:hover:active
+      + .option
+      + .option[aria-selected="true"]
+      ~ .selection-indicator-wrapper {
+      --morph-factor: 2;
+    }
+  }
+
+  .major-options .option[aria-selected="true"] + .option {
+    &:hover ~ .selection-indicator-wrapper,
+    &:focus-visible ~ .selection-indicator-wrapper {
+      --morph-factor: 1;
+    }
+    &:hover:active ~ .selection-indicator-wrapper {
+      --morph-factor: -1;
+    }
+  }
+
+  .major-options .option[aria-selected="true"] + .option + .option {
+    &:hover ~ .selection-indicator-wrapper,
+    &:focus-visible ~ .selection-indicator-wrapper {
+      --morph-factor: 2;
+    }
+    &:hover:active ~ .selection-indicator-wrapper {
+      --morph-factor: -2;
+    }
+  }
+
+  .major-options .option:active ~ .selection-indicator-wrapper {
+    --transition-duration: 0.15s;
+    > span {
+      scale: calc(
+          1 + var(--morph-factor) * var(--morph-factor) * 0.05
+        )
+        calc(1 - var(--morph-factor) * var(--morph-factor) * 0.1);
+      transition-timing-function: unset;
+    }
+  }
+
+  .major-options .selection-indicator-wrapper {
+    --transition-duration: 0.3s;
+    --morph-factor: 0;
+    width: 33.33%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    mix-blend-mode: difference;
+    transition-duration: var(--transition-duration);
+    /* transition-timing-function: cubic-bezier(0.35, 1.44, 0.41, 1); */
+    transition-timing-function: cubic-bezier(0.25, 1.44, 0.5, 1);
+
+    left: 0;
+    top: 50%;
+    translate: 0 -50%;
+    pointer-events: none;
+    transform: translateX(calc(var(--morph-factor) * 10%));
+    scale: calc(1 + var(--morph-factor) * var(--morph-factor) * 0.05)
+      calc(1 - var(--morph-factor) * var(--morph-factor) * 0.1);
+
+    > span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 100px;
+      transition-duration: calc(1.5 * var(--transition-duration));
+      transition-timing-function: cubic-bezier(0.5, 6, 0, 1);
+    }
+  }
+
+  .minor-options {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .minor-options .option {
+    width: 1.5rem;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .minor-options .option::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    background-color: #ffffff50;
+    transform: scale(0);
+    transition: transform 0.2s;
+  }
+  .minor-options .option[aria-selected="true"]::before {
+    transform: scale(1);
+  }
+}
+
+@keyframes selection-change {
+  50% {
+    height: 10%;
+  }
+  100% {
+    height: 100%;
+  }
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.5rem;
+  opacity: 0.6;
+
+  transition: translate var(--hide-duration);
+
+  font-size: 0.75rem;
+
+  &.hide {
+    translate: 0 150%;
+  }
+
+  .github {
+    width: 1rem;
+    height: 1rem;
+    > img {
+      height: 100%;
+    }
+  }
+}
+
+.stats-screen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  perspective: 500px;
+
+  .card-wrapper {
+    opacity: 1;
+    animation: reveal 2s;
+    transition: 0.2s;
+    transition-timing-function: ease-out;
+    transform: rotateX(calc((var(--mouse-y, 0.5) - 0.5) * -0.075deg))
+      rotateY(calc((var(--mouse-x, 0.5) - 0.5) * 0.075deg));
+
+    &:hover {
+      scale: 1.075;
+    }
+
+    &.out {
+      transition-timing-function: ease-in;
+      translate: 0 -60rem;
+      rotate: 0.75turn;
+      transform-origin: 80% 10%;
+    }
+  }
+}
+
+@keyframes reveal {
+  from {
+    transform: scale(0) rotateX(3turn);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.stats-screen .glow-card {
+  /* properties for animated gradient */
+  --bgsize: 500%;
+  --width: 22;
+  --height: 27;
+
+  border-radius: 1.75rem;
+  padding: 1rem;
+
+  .inner,
+  .stats,
+  .wpm,
+  .restart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .inner {
+    height: 100%;
+    border-radius: 1rem;
+
+    mix-blend-mode: difference;
+    background: var(--gray-100);
+    box-shadow: calc((var(--mouse-x, 0.5) - 0.5) * -0.05px)
+      calc((var(--mouse-y, 0.5) - 0.5) * -0.05px) 16px 8px #00000075
+      inset;
+
+    justify-content: center;
+    gap: 1.5rem;
+    color: black;
+  }
+
+  .wpm > .small,
+  .accuracy > .small,
+  .keys {
+    color: var(--gray-700);
+  }
+
+  .stats {
+    gap: 0.75rem;
+  }
+
+  .wpm {
+    gap: 0.25rem;
+    > .big {
+      font-size: 8rem;
+      line-height: 80%;
+    }
+  }
+
+  .accuracy {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .restart {
+    gap: 0.5rem;
+
+    > button {
+      width: 3.5rem;
+      aspect-ratio: 1;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      outline-color: black;
+
+      > img {
+        transition: rotate 0.5s;
+      }
+
+      &:focus-visible {
+        outline: none;
+      }
+
+      &:hover,
+      &:focus-visible {
+        background-color: #00000050;
+      }
+      &:hover > img,
+      &:focus-visible > img {
+        rotate: 0.5turn;
+      }
+    }
+  }
+
+  & hr {
+    height: 3px;
+    width: 7.5rem;
+    background: linear-gradient(
+      90deg,
+      var(--gray-700) 50%,
+      transparent 50%
+    );
+    background-repeat: repeat-x;
+    background-size: 16px;
+    animation: dash 2s linear infinite;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      white 3rem,
+      white calc(100% - 3rem),
+      transparent 100%
+    );
+  }
+
+  .keys {
+    > span {
+      border: 1px solid;
+      border-radius: 0.3rem;
+      padding: 0.1rem 0.5rem;
+    }
+  }
+}
+
+@keyframes dash {
+  to {
+    background-position: 16px;
+  }
+}
