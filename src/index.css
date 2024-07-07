@@ -140,7 +140,7 @@ body.dark {
 }
 @media only screen and (max-width: 768px) {
   #theme-toggle {
-    top: 40px; /* Increase the top padding for mobile screens */
+    top: 50px; /* Increase the top padding for mobile screens */
     left: 25px; /* Increase the left padding for mobile screens */
   }
 }
