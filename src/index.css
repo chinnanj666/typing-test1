@@ -129,7 +129,7 @@ body.dark {
 #theme-toggle {
   position: fixed;
   top: 17px;
-  right: 14px;
+  left: 14px;
   padding: 10px;
   background: none;
   border: none;
