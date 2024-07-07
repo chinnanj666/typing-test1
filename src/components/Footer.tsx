@@ -12,7 +12,7 @@ function Footer() {
         </div>
         <div className="right-content">
           <a
-            href="https://cooltypinggame.com"
+            href="https://chinnnajdev.netlify.app/"
             tabIndex={isTyping ? -1 : 1}
           >
             Chinna N J
