@@ -128,8 +128,8 @@ body.dark {
 
 #theme-toggle {
   position: fixed;
-  top: 17px;
-  left: 14px;
+  top: 30px; /* Increase the top padding */
+  left: 20px; /* Increase the left padding */
   padding: 10px;
   background: none;
   border: none;
@@ -138,6 +138,13 @@ body.dark {
   align-items: center;
   justify-content: center;
 }
+@media only screen and (max-width: 768px) {
+  #theme-toggle {
+    top: 40px; /* Increase the top padding for mobile screens */
+    left: 25px; /* Increase the left padding for mobile screens */
+  }
+}
+
 
 #theme-toggle svg {
   width: 15px;
