@@ -93,7 +93,7 @@ meter {
   -webkit-user-modify: read-write;
   overflow-wrap: break-word;
   -webkit-line-break: after-white-space;
-  /* -webkit-user-select: auto; */
+  -webkit-user-select: auto;
 }
 
 /* apply back the draggable feature - exist only in Chromium and Safari */
@@ -140,8 +140,8 @@ body.dark {
 }
 
 #theme-toggle svg {
-  width: 24px;
-  height: 24px;
+  width: 15px;
+  height: 20px;
   transition: opacity 0.3s, transform 0.3s;
   stroke: var(--border-color); /* Set the stroke color */
   stroke-width: 2; /* Set the stroke width */
