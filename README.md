@@ -1,6 +1,6 @@
 # Advanced Typing Test
 
-Level up your typing skills! Test and improve your speed and accuracy with this new and improved advanced typing test tool.
+Level up your typing skills! Test and improve your speed and accuracy wiith this new and improved advanced typing test tool.
 <img width="1385" alt="Screenshot 2024-07-07 at 22 11 08" src="https://github.com/chinnanj666/typing-test1/assets/114425702/40dfc631-3d3f-4843-8b67-3394b34f13eb">
 
 ## Table of Contents
